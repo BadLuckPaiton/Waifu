@@ -1,19 +1,20 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
+[ext_resource path="res://turret-png.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Turret.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32.5, 31.5 )
+extents = Vector2( 269.328, 231.476 )
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
-position = Vector2( 5.3454, 5.3454 )
+position = Vector2( 1.49835, 0.74913 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( -3.58162, -7.14885 )
+position = Vector2( 53.629, -24.3793 )
+scale = Vector2( 0.994287, 1.00721 )
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 447.396, 362.448 )
+position = Vector2( 54.8396, -24.1151 )
 shape = SubResource( 1 )

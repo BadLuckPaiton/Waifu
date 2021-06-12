@@ -10,6 +10,7 @@ var recoil_dash = Vector2();
 var dash_velocity= Vector2();
 var canShoot=true;
 var canDash=true;
+var speed=5;
 func _ready():
 	
 	pass # Replace with function body.
@@ -20,13 +21,13 @@ func _process(delta):
 	motion=Vector2.ZERO;
 	
 	if Input.is_action_pressed("ui_right"):
-		motion.x=1;
+		motion.x=speed;
 	if Input.is_action_pressed("ui_left"):
-		motion.x=-1;
+		motion.x=-speed;
 	if Input.is_action_pressed("ui_up"):
-		motion.y=-1;
+		motion.y=-speed;
 	if Input.is_action_pressed("ui_down"):
-		motion.y=1;
+		motion.y=speed;
 
 	if Input.is_action_pressed("ui_shoot") and canShoot:
 		_shot();
@@ -34,7 +35,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_dash") and canDash:
 		_dash();
 		
-	look_at(get_global_mouse_position());
+
 
 	if dash:
 		_decrease_dash();
