@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 var motion = Vector2();
 
-#var bullet = preload("res://character/Bullet.tscn")
+var turrentclass =  preload("res://Scripts/Turret.gd");
 var dash = false;
 var destination;
 var dash_frames = 0
@@ -10,6 +10,9 @@ var recoil_dash = Vector2();
 var dash_velocity= Vector2();
 var canShoot=true;
 var canDash=true;
+var TurretArea = false;
+var Turret = null;
+var carryTurret = false;
 var speed=5;
 func _ready():
 	
@@ -17,7 +20,6 @@ func _ready():
 	
 	
 func _process(delta):
-	var movement = Vector2.ZERO;
 	motion=Vector2.ZERO;
 	
 	if Input.is_action_pressed("ui_right"):
@@ -28,60 +30,38 @@ func _process(delta):
 		motion.y=-speed;
 	if Input.is_action_pressed("ui_down"):
 		motion.y=speed;
-
-	if Input.is_action_pressed("ui_shoot") and canShoot:
-		_shot();
 		
-	if Input.is_action_just_pressed("ui_dash") and canDash:
-		_dash();
+	if Input.is_action_just_pressed("ui_action") and carryTurret:
+		var current_Node = get_parent().get_child(0);
+		var turrent = current_Node.get_child(current_Node.get_child_count()-1);
+		var temp = turrent;
+		temp.position = current_Node.global_position;
+		current_Node.remove_child(turrent)
+		get_parent().add_child(temp);
+		get_parent().get_child(1)._shot_status(true);
+		carryTurret=false;
 		
-
-
-	if dash:
-		_decrease_dash();
-		movement = dash_velocity;
-	else:
-		movement=motion;
-		
-	move_and_collide(movement);
+	if Input.is_action_just_pressed("ui_action") and TurretArea:
+		var tempTurrent = Turret;
+		#this will be change for a new sprite or animation;
+		tempTurrent.position = Vector2(70,70);
+		get_parent().remove_child(Turret);
+		get_parent().get_child(0).add_child(tempTurrent);
+		get_parent().get_child(0).get_child(get_parent().get_child(0).get_child_count()-1)._shot_status(false);
+		TurretArea = false;
+		carryTurret = true;
+	move_and_collide(motion);
 	pass;
 
-func _decrease_dash():
-	if dash_frames==0:
-		dash=false;
-		yield(get_tree().create_timer(0.5), "timeout")
-		canDash=true;
-	
-	if dash_frames > 0:
-		dash_frames -= 1
-		dash_velocity=dash_velocity+recoil_dash;
-		recoil_dash=Vector2.ZERO;
-	pass;
+func _on_Area2D_body_entered(body):
+	if(body.get_name()=="Turret") and !carryTurret :
+		TurretArea = true;
+		Turret=body;
+	pass # Replace with function body.
 
-func _shot():
-	#var bulleto= bullet.instance();
-	#bulleto.position= $Gun.global_position;
-	#get_tree().get_root().add_child(bulleto);
-	canShoot=false;
-	yield(get_tree().create_timer(0.3), "timeout")
-	canShoot=true;
-	pass;
-	
-func _dash():
-	_recoil_dash();
-	dash_velocity=motion*5
-	dash=true;
-	canDash=false;
-	dash_frames=10;
-	pass;
 
-func _recoil_dash():
-	if motion.x ==1 :
-		recoil_dash.x=-1;
-	elif motion.x==-1:
-		recoil_dash.x=1;
-	if motion.y==1:
-		recoil_dash.y=-1;
-	elif motion.y==-1:
-		recoil_dash.y=1;
-	pass;
+func _on_Area2D_body_exited(body):
+	if(body.get_name()=="Turret"):
+		TurretArea = false;
+		Turret = null;
+	pass # Replace with function body.
