@@ -25,3 +25,10 @@ func _shot():
 func _shot_status(canShot):
 	canShoot= canShot;
 	pass;
+
+
+func _on_Area2D_body_exited(body): 
+	if(body.get_name()=="Player"):
+		print("wwwwwwwwa")
+		
+	pass # Replace with function body.

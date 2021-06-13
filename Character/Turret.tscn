@@ -1,13 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://turret-png.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Turret.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 269.328, 231.476 )
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 1035.41
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 position = Vector2( 1.49835, 0.74913 )
@@ -25,7 +22,8 @@ shape = SubResource( 1 )
 [node name="Gun" type="Node2D" parent="."]
 position = Vector2( 336.358, -141.27 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 2 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+build_mode = 1
+polygon = PoolVector2Array( 9.43256, -1028.72, 265.722, -996.684, 511.332, -905.915, 708.889, -767.091, 815.676, -622.929, 911.784, -500.123, 1007.89, -270.531, 1039.93, -3.56297, 1023.91, 242.048, 938.481, 460.961, 890.427, 541.052, 730.246, 738.608, 543.369, 893.449, 303.097, 994.897, 4.0932, 1032.27, -246.857, 1010.92, -497.806, 909.468, -722.06, 743.947, -882.241, 530.373, -989.028, 258.066, -1021.06, -19.581, -983.688, -254.513, -866.222, -537.499, -722.06, -724.377, -492.467, -884.557, -241.517, -986.005 )
