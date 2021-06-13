@@ -1,5 +1,5 @@
 extends KinematicBody2D
-var bullet = preload("res://Character/bullet.tscn")
+var bullet = preload("res://Character/Bullet.tscn")
 var dash_velocity= Vector2();
 var canShoot=true;
 

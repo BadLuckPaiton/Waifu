@@ -2,17 +2,11 @@ extends KinematicBody2D
 
 var motion = Vector2();
 
-var turrentclass =  preload("res://Scripts/Turret.gd");
-var dash = false;
-var destination;
-var dash_frames = 0
-var recoil_dash = Vector2();
-var dash_velocity= Vector2();
+var turretclass =  load("res://Character/Turret.tscn");
 var canShoot=true;
-var canDash=true;
-var TurretArea = false;
-var Turret = null;
-var carryTurret = false;
+var turretRef = null;
+var isTurretInArea = false;
+var isCarryingTurret = false;
 var speed=5;
 func _ready():
 	
@@ -31,37 +25,37 @@ func _process(delta):
 	if Input.is_action_pressed("ui_down"):
 		motion.y=speed;
 		
-	if Input.is_action_just_pressed("ui_action") and carryTurret:
+	if Input.is_action_just_pressed("ui_action") and isCarryingTurret:
 		var current_Node = get_parent().get_child(0);
-		var turrent = current_Node.get_child(current_Node.get_child_count()-1);
-		var temp = turrent;
-		temp.position = current_Node.global_position;
-		current_Node.remove_child(turrent)
-		get_parent().add_child(temp);
+		var newTurret = turretclass.instance();
+		newTurret.position = current_Node.global_position;
+		newTurret.name = "Turret"
+		get_parent().add_child(newTurret);
 		get_parent().get_child(1)._shot_status(true);
-		carryTurret=false;
+		# TODO: Change sprite back when dropping turret
+		$Sprite.modulate = Color(1,1,1);
+		isCarryingTurret=false;
 		
-	if Input.is_action_just_pressed("ui_action") and TurretArea:
-		var tempTurrent = Turret;
-		#this will be change for a new sprite or animation;
-		tempTurrent.position = Vector2(70,70);
-		get_parent().remove_child(Turret);
-		get_parent().get_child(0).add_child(tempTurrent);
-		get_parent().get_child(0).get_child(get_parent().get_child(0).get_child_count()-1)._shot_status(false);
-		TurretArea = false;
-		carryTurret = true;
+	if Input.is_action_just_pressed("ui_action") and isTurretInArea:
+		var tempTurret = turretRef;
+		get_parent().remove_child(turretRef);
+		### TODO: Change sprite when picking up Turret
+		$Sprite.modulate = Color(1,0,0)
+		isTurretInArea = false;
+		isCarryingTurret = true;
+		
 	move_and_collide(motion);
 	pass;
 
 func _on_Area2D_body_entered(body):
-	if(body.get_name()=="Turret") and !carryTurret :
-		TurretArea = true;
-		Turret=body;
+	if(body.get_name()=="Turret") and !isCarryingTurret :
+		isTurretInArea = true;
+		turretRef=body;
 	pass # Replace with function body.
 
 
 func _on_Area2D_body_exited(body):
 	if(body.get_name()=="Turret"):
-		TurretArea = false;
-		Turret = null;
+		isTurretInArea = false;
+		turretRef = null;
 	pass # Replace with function body.
