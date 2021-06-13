@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "RigidBody2D",
 "class": "Bullet",
 "language": "GDScript",
-"path": "res://Scripts/bullet.gd"
+"path": "res://Scripts/Bullet.gd"
 } ]
 _global_script_class_icons={
 "Bullet": ""
