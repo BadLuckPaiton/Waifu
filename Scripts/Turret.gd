@@ -23,6 +23,5 @@ func _shot():
 	pass;
 
 func _shot_status(canShot):
-	print("shooot")
 	canShoot= canShot;
 	pass;
